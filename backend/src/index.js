@@ -12,6 +12,9 @@ const __dirname = dirname(__filename);
 dotenv.config({ path: join(__dirname, '../../.env') });
 
 const app = express();
+
+// Remove the PORT listener and export for Vercel
+module.exports = require('vercel-express')(app);
 const PORT = process.env.PORT || 5000;
 
 // Middleware
