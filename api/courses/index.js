@@ -1,7 +1,6 @@
 import { processOpenRouterRequest } from './openRouterService.js';
 
 export const config = {
-  runtime: 'nodejs'
 };
 
 export default async function handler(req) {
