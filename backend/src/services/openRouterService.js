@@ -13,7 +13,7 @@ export async function processOpenRouterRequest(content) {
     }
 
     const prompt = `
-      Analyze this course syllabus and create VALID JSON output with:
+      Analyze this course syllabus and create a detailed hierarchical course structure in VALID JSON format with:
       {
         "courseTitle": string,
         "courseDescription": string,
@@ -41,6 +41,15 @@ export async function processOpenRouterRequest(content) {
       3. No markdown formatting
       4. Escape special characters
       5. Maintain proper array formatting
+      6. Recursively generate subtopics for each topic:
+         - For each main topic (depth:1), create 3-5 subtopics (depth:2)
+         - For each depth:2 subtopic, create 2-3 child topics (depth:3)
+         - Continue breaking down until all concepts are covered (max depth:5)
+         - Each child topic must reference its parent via parentId
+      7. Ensure hierarchical relationships:
+         - Parent topics should contain broader concepts
+         - Child topics must be specific components of their parent
+         - Sibling topics should represent parallel concepts
 
       Syllabus content:
       ${content}

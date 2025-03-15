@@ -25,7 +25,7 @@ interface ProcessedSyllabusResponse {
 // Updated to use backend API instead of direct OpenRouter calls
 export async function callOpenRouter(messages: OpenRouterMessage[]): Promise<string> {
   try {
-    const response = await fetch("http://localhost:5000/api/courses/generate", {
+    const response = await fetch("/api/courses/generate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
