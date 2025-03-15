@@ -59,7 +59,7 @@ export async function processOpenRouterRequest(content) {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${apiKey}`,
-        "HTTP-Referer": process.env.APP_URL || 'http://localhost:5000',
+        "HTTP-Referer": process.env.VERCEL_URL || process.env.APP_URL || 'http://localhost:5000',
         "X-Title": "AI Lecture Planner",
         "Content-Type": "application/json"
       },

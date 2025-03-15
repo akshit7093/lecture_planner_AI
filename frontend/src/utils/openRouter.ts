@@ -37,7 +37,12 @@ export async function callOpenRouter(messages: OpenRouterMessage[]): Promise<str
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
-      throw new Error(`API error: ${errorData?.error || response.statusText}`);
+      console.error('API response error:', {
+        status: response.status,
+        statusText: response.statusText,
+        errorData
+      });
+      throw new Error(`API error: ${errorData?.error?.message || errorData?.error || response.statusText}`);
     }
 
     const data = await response.json();
@@ -59,7 +64,13 @@ export async function processSyllabus(content: string) {
     });
 
     if (!response.ok) {
-      throw new Error(`API error: ${response.statusText}`);
+      const errorData = await response.json().catch(() => null);
+      console.error('Syllabus processing error:', {
+        status: response.status,
+        statusText: response.statusText,
+        errorData
+      });
+      throw new Error(`Processing error: ${errorData?.error?.message || errorData?.error || response.statusText}`);
     }
 
     const data: ProcessedSyllabusResponse = await response.json();

@@ -4,13 +4,18 @@ const OPENROUTER_API_URL = 'https://api.openrouter.ai/api/v1/chat/completions';
 
 export async function processOpenRouterRequest(prompt, apiKey) {
   if (!apiKey) {
+    console.error('OpenRouter API key check:', {
+      envKeys: Object.keys(process.env),
+      vercelEnv: process.env.VERCEL
+    });
     throw new Error('OpenRouter API key is not configured');
   }
 
-  const headers = {
+  // Validate and use Vercel-specific environment variables
+const headers = {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${apiKey}`,
-    'HTTP-Referer': process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000',
+    'HTTP-Referer': process.env.VERCEL_URL || process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000',
     'X-Title': 'AI Lecture Planner'
   };
 
@@ -27,11 +32,14 @@ export async function processOpenRouterRequest(prompt, apiKey) {
   });
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    throw new Error(
-      error.error?.message || 
-      `OpenRouter API request failed with status ${response.status}`
-    );
+    const errorText = await response.text();
+    console.error('OpenRouter API Failure:', {
+      status: response.status,
+      headers: Object.fromEntries(response.headers.entries()),
+      errorText: errorText.slice(0, 500),
+      apiKeyConfigured: !!apiKey
+    });
+    throw new Error(`OpenRouter API error ${response.status}: ${errorText.slice(0, 200)}`);
   }
 
   const data = await response.json();
