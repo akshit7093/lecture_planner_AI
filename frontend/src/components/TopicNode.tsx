@@ -102,8 +102,15 @@ export const TopicNode: React.FC<TopicNodeProps> = ({ data }) => {
 
   if (isEditing) {
     return (
-      <div className="p-4 rounded-lg shadow-md bg-white border-2 border-blue-400 w-96 relative overflow-y-auto max-h-[80vh]">
-        <div className="space-y-3">
+      <div className="p-4 rounded-lg shadow-md bg-white border-2 border-blue-400 w-96 relative overflow-y-auto max-h-[80vh]"
+           style={{
+             touchAction: 'pan-y',
+             WebkitOverflowScrolling: 'touch',
+             overscrollBehavior: 'contain'
+           }}
+           onTouchStart={(e) => e.stopPropagation()}
+           onTouchMove={(e) => e.stopPropagation()}>
+        <div className="space-y-3 touch-pan-y">
           <div>
             <label className="block text-sm font-medium mb-1">Title</label>
             <input
