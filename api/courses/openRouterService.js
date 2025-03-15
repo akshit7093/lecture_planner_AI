@@ -2,15 +2,15 @@
 
 const OPENROUTER_API_URL = 'https://api.openrouter.ai/api/v1/chat/completions';
 
-export async function processOpenRouterRequest(prompt) {
-  if (!process.env.OPENROUTER_API_KEY) {
+export async function processOpenRouterRequest(prompt, apiKey) {
+  if (!apiKey) {
     throw new Error('OpenRouter API key is not configured');
   }
 
   const headers = {
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-    'HTTP-Referer': process.env.VERCEL_URL || 'http://localhost:3000',
+    'Authorization': `Bearer ${apiKey}`,
+    'HTTP-Referer': process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000',
     'X-Title': 'AI Lecture Planner'
   };
 
@@ -18,7 +18,7 @@ export async function processOpenRouterRequest(prompt) {
     method: 'POST',
     headers,
     body: JSON.stringify({
-      model: 'anthropic/claude-3-opus-20240229',
+      model: 'google/gemini-2.0-pro-exp-02-05:free',
       messages: [{
         role: 'user',
         content: prompt
